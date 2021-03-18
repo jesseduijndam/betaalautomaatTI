@@ -3,9 +3,26 @@
 #include <MFRC522.h>
 #include <string.h>
 
+
+//#define ARDUINO
+
+
+#if defined ARDUINO
+//voor arduino
 #define RST_PIN 9 // Configurable, see typical pin layout above
 #define SS_PIN 10 // Configurable, see typical pin layout above
 int zaspin = 7;
+#else
+//voor esp
+#define SS_PIN 4  //D2
+#define RST_PIN 5 //D1
+int zaspin = 0;
+#endif
+
+
+
+
+
 
 MFRC522 mfrc522(SS_PIN, RST_PIN); // Create MFRC522 instance
 
