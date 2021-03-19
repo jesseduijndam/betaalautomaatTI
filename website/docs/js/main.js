@@ -7,6 +7,12 @@ class AutomaatGui {
         document.head.appendChild(title);
         let background = document.createElement("automaatbackground");
         document.body.appendChild(background);
+        this.title = new Tekst(320, 5, 1, "welcome bij C5");
+        let option1 = new Tekst(350, 220, 1, "scan pas");
+    }
+    aScan() {
+        document.body.innerHTML = "";
+        this.currentscreen = new aScan(this);
     }
     update() {
     }
@@ -40,6 +46,15 @@ class OnlineGui {
         document.body.appendChild(background);
     }
     update() {
+    }
+}
+class Tekst {
+    constructor(x, y, scale, txt) {
+        this.tekst = document.createElement("tekst");
+        document.body.appendChild(this.tekst);
+        this.tekst.id = "tekst";
+        this.tekst.innerHTML = txt;
+        this.tekst.style.transform = `translate(${x}px, ${y}px) scale(${scale})`;
     }
 }
 //# sourceMappingURL=main.js.map

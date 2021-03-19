@@ -25,3 +25,8 @@ onlinebackground {
     width:800px; height: 480px;
     background-size : cover;
 }
+
+tekst {
+    font-size: 30px;     
+    z-index: 1;
+}
