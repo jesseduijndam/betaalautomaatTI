@@ -1,5 +1,9 @@
 #include <Keypad.h> //keypad library
 
+
+
+using namespace std;
+
 //Lenght of password +1 for null character
 #define Password_Length 5
 //Character to hold password input
@@ -7,6 +11,7 @@ char Data[Password_Length];
 //Password
 char Master[Password_Length] = {'1', '2', '3', '4'};
 
+int count = 0;
 
 const byte ROWS = 4; //row size
 const byte COLS = 4; //column size
@@ -30,8 +35,10 @@ int position = 0;
 int wrong = 0; //Variable to calculate the wrong inputs.
 
 
+
 void setup() {
   Serial.begin(9600);
+
 
 
 }
@@ -43,24 +50,25 @@ void loop() {
 
   if (customKey != NO_KEY) {
     Serial.println (customKey);
-
-
-
     if (customKey == 'A')
     {
-      Serial.println ("Enter Password");
-
-      int j = 0;
-      while (j < 4)
-      {
-        char customKey = customKeypad.getKey ();
-        if (customKey)
+      if (count < 3) {
+        Serial.println ("Enter Password");
+        int j = 0;
+        while (j < 4)
         {
-          Data[j++] = customKey;
-          Serial.println (customKey);
+          char customKey = customKeypad.getKey ();
+          if (customKey)
+          {
+            Serial.println (customKey);
+            Data[j++] = customKey;
+          }
+          customKey = 0;
         }
-        customKey = 0;
+      } else  {
+        Serial.println("blocked");
       }
+      
     }
 
     if (customKey == 'D')
@@ -69,13 +77,18 @@ void loop() {
       if (!(strncmp(Master, Data, 5)))
       {
         Serial.println("Access Granted");
+
+        if ("Acces Granted"){
+        count = 0;
+      }
       }
       else
       {
+        count++;
+        Serial.print (count);
         Serial.println("Access Denied");
       }
+      
     }
-
-
   }
 }
