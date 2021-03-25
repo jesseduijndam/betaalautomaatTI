@@ -3,34 +3,17 @@
 #include <MFRC522.h>
 #include <string.h>
 
-
-//#define ARDUINO
-
-
-#if defined ARDUINO
-//voor arduino
 #define RST_PIN 9 // Configurable, see typical pin layout above
 #define SS_PIN 10 // Configurable, see typical pin layout above
 int zaspin = 7;
-#else
-//voor esp
-#define SS_PIN 4  //D2
-#define RST_PIN 5 //D1
-int zaspin = 0;
-#endif
-
-
-
-
-
 
 MFRC522 mfrc522(SS_PIN, RST_PIN); // Create MFRC522 instance
 
 void setup()
 {
   Serial.begin(115200); // Initialize serial communications with the PC
-  SPI.begin();        // Init SPI bus
-  mfrc522.PCD_Init(); // Init MFRC522 card
+  SPI.begin();          // Init SPI bus
+  mfrc522.PCD_Init();   // Init MFRC522 card
   Serial.println(F("Write or read data of a RFID card "));
   pinMode(zaspin, OUTPUT);
 }
@@ -191,29 +174,30 @@ void loop()
       return;
     }
 
-    Serial.write(buffer1, 16);
+    // Serial.write(buffer1, 16);
+    // // Serial.println(" ");
+    // Serial.write(buffer2, 16);
+    // Serial.print("|");
     // Serial.println(" ");
-    Serial.write(buffer2, 16);
-    Serial.print("|");
-    Serial.println(" ");
 
-    // char vak[34];
-    // for (int i = 0; i < 16; i++)
-    // {
-    //   vak[i] = buffer1[i];
-    // vak[i + 16] = buffer2[i];
-    // Serial.write(vak, 32);
-    // char output[32];
-    // for (int i = 0; i < 16; i++)
-    // {
-    //   output[i] = (char)buffer1[i];
-    //   output[i + 16] = (char)buffer2[i];
-    // }
-    // for (int i = 0; i < 32; i++)
-    // {
-    //   Serial.print(output[i]);
-    // }
-    // Serial.println("|");
+    char vak[34];
+    for (int i = 0; i < 16; i++)
+    {
+      vak[i] = buffer1[i];
+      vak[i + 16] = buffer2[i];
+    }
+    //Serial.write(vak, 32);
+    char output[32];
+    for (int i = 0; i < 16; i++)
+    {
+      output[i] = (char)buffer1[i];
+      output[i + 16] = (char)buffer2[i];
+    }
+    for (int i = 0; i < 32; i++)
+    {
+      Serial.print(output[i]);
+    }
+    Serial.println("|");
 
     delay(100); //change value if you want to read cards faster
 
