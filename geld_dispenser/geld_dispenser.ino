@@ -1,19 +1,22 @@
 #include <Arduino.h>
-#include <Stepper.h>
 #include <string.h>
 #include <AccelStepper.h>
 
-const int stepsPerRevolution = 4096;
+const long stepsPerRevolution = 4096;
 #define relay_pin 2
 
 AccelStepper stepper1 = AccelStepper(8, 8, 10, 9, 11);
 AccelStepper stepper2 = AccelStepper(8, 4, 6, 5, 7);
 
-void push(AccelStepper &step, int aantal)
+void push(AccelStepper &step, long aantal)
 {
   digitalWrite(relay_pin, HIGH);
-  step.move((-stepsPerRevolution * aantal));
+
+  long steps = (stepsPerRevolution * aantal);
+
+  step.move(steps);
 }
+
 void setup()
 {
 
@@ -27,8 +30,10 @@ void setup()
 
   Serial.println("start");
 }
+
 String read_serial()
 {
+  Serial.flush();
   String data_serial = "";
   while (!Serial.available())
   {
@@ -40,8 +45,10 @@ String read_serial()
   Serial.flush();
   return data_serial;
 }
+
 void loop()
 {
+
   String serial_receive = read_serial();
   if (serial_receive == "geld")
   {
@@ -52,16 +59,24 @@ void loop()
     Serial.println("send aantal 10");
     int aantal_10 = read_serial().toInt();
 
-    push(stepper1, aantal_50);
-    push(stepper2, aantal_10);
+    if (aantal_50 > 0)
+    {
+      push(stepper1, aantal_50);
+    }
+    if (aantal_10 > 0)
+    {
+      push(stepper2, aantal_10);
+    }
 
     while (stepper1.isRunning() || stepper2.isRunning())
     {
       stepper1.run();
       stepper2.run();
     }
-
-    delay(2000);
-    digitalWrite(relay_pin, LOW);
+    if (aantal_50 > 0 || aantal_10 > 0)
+    {
+      delay(2000);
+      digitalWrite(relay_pin, LOW);
+    }
   }
 }

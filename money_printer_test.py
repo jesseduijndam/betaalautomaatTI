@@ -9,7 +9,6 @@ arduino = serial.Serial('COM3', 115200)
 serial_in = arduino.readline().decode('utf-8')[:-2]
 while serial_in != "start":
     serial_in = arduino.readline().decode('utf-8')[:-2]
-print(serial_in)
 
 
 arduino.write("geld\n".encode())
