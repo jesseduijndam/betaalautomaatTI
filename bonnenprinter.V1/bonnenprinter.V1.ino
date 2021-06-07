@@ -10,8 +10,11 @@
   You may need to edit the PRINTER_FIRMWARE value in Adafruit_Thermal.h
   to match your printer (hold feed button on powerup for test page).
   ------------------------------------------------------------------------*/
-
+#include <TimeLib.h>
 #include "Adafruit_Thermal.h"
+
+
+
 
 
 
@@ -35,57 +38,89 @@ Adafruit_Thermal printer(&mySerial);     // Pass addr to printer constructor
 int bedrag = 100;
 String Bank = "Rabobank";
 String Tijd = "12:00";
-String Kaart = "NL27312123515";
+String Kaart = "NL27*****3515";
 String incomingByte;
+String readstring;
 
 void setup() {
   Serial.begin(9600);
-
+  
   pinMode(7, OUTPUT); digitalWrite(7, LOW);
   
   
   
-  printer.begin();
+  
 }
 
 void loop() {
+
+ 
+  
 if (Serial.available() > 0){
     incomingByte = Serial.readStringUntil('\n');
-    if(incomingByte == "Ja"){
+    
+    //char c = Serial.read();
+    //readstring += c;
+    
+    //if(incomingByte == "Ja"){
+      printReceipt();
       Serial.write("Aan het printen");
       
     
- mySerial.begin(9600);
-  printer.inverseOn();
-  printer.println(F("Inverse ON"));
-  printer.inverseOff();
+ 
+ 
+    }
+//}
+if (readstring.length() >0)
+{
+  Serial.println(readstring);
+  
+}
+delay(500);
+
+}
+
+
 
   // Bank info
+  void printReceipt(){
+    mySerial.begin(9600);
+  printer.begin();
+    
+  
   printer.justify('C');
+  printer.boldOn();
   printer.setSize('L');
-  printer.println(F("BANK GROEP 5C"));
-  printer.setLineHeight(50);
-  printer.setSize('S');
-  printer.println(F("Made by Patrick,Jelle,Niek,Jesse"));
-
-
+  printer.println("CINA");
+  printer.println("_____________");
   printer.justify('L');
   printer.setSize('M');
-  printer.print("Bank: " +Bank);
+
+  
+  
+ // printer.boldOff();
+
+
+  
+  
+  printer.print(incomingByte);
+
   printer.println("\n------");
-  printer.print("Tijd: " + Tijd);
-  printer.println("\n------");
+  delay(1000);
   printer.print("Kaart: " +Kaart);
+  delay(1000);
   printer.println("\n------");
-  printer.println("------");
+  delay(1000);
+  
+  
 
 
   // Barcode examples:
   // CODE39 is the most common alphanumeric barcode:
-  printer.printBarcode("Bitch", CODE39);
-  printer.setBarcodeHeight(100);
+  //printer.printBarcode("Bitch", CODE39);
+  //printer.setBarcodeHeight(100);
   // Print UPC line on product barcodes:
-  printer.printBarcode("123456789123", UPC_A);
+  //printer.printBarcode("123456789123", UPC_A);
 
   
   printer.println(F("Tot ziens!"));
@@ -96,7 +131,8 @@ if (Serial.available() > 0){
   printer.wake();       // MUST wake() before printing again, even if reset
   printer.setDefault(); // Restore printer to defaults
   }
-
   
-}
-}
+
+
+    
+  
