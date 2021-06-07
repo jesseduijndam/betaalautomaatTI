@@ -10,8 +10,11 @@
   You may need to edit the PRINTER_FIRMWARE value in Adafruit_Thermal.h
   to match your printer (hold feed button on powerup for test page).
   ------------------------------------------------------------------------*/
-
+#include <TimeLib.h>
 #include "Adafruit_Thermal.h"
+
+
+
 
 
 
@@ -35,53 +38,89 @@ Adafruit_Thermal printer(&mySerial);     // Pass addr to printer constructor
 int bedrag = 100;
 String Bank = "Rabobank";
 String Tijd = "12:00";
-String Kaart = "NL27312123515";
+String Kaart = "NL27*****3515";
+String incomingByte;
+String readstring;
 
 void setup() {
-   // This line is for compatibility with the Adafruit IotP project pack,
-  // which uses pin 7 as a spare grounding point.  You only need this if
-  // wired up the same way (w/3-pin header into pins 5/6/7):
+  Serial.begin(9600);
+  
   pinMode(7, OUTPUT); digitalWrite(7, LOW);
   
-  // NOTE: SOME PRINTERS NEED 9600 BAUD instead of 19200, check test page.
-  mySerial.begin(9600);  // Initialize SoftwareSerial
-  //Serial1.begin(19200); // Use this instead if using hardware serial
-  printer.begin();        // Init printer (same regardless of serial type)
+  
+  
+  
+}
 
-  // The following calls are in setup(), but don't *need* to be.  Use them
-  // anywhere!  They're just here so they run one time and are not printed
-  // over and over (which would happen if they were in loop() instead).
-  // Some functions will feed a line when called, this is normal.
-  printer.inverseOn();
-  printer.println(F("Inverse ON"));
-  printer.inverseOff();
+void loop() {
+
+ 
+  
+if (Serial.available() > 0){
+    incomingByte = Serial.readStringUntil('\n');
+    
+    //char c = Serial.read();
+    //readstring += c;
+    
+    //if(incomingByte == "Ja"){
+      printReceipt();
+      Serial.write("Aan het printen");
+      
+    
+ 
+ 
+    }
+//}
+if (readstring.length() >0)
+{
+  Serial.println(readstring);
+  
+}
+delay(500);
+
+}
+
+
 
   // Bank info
+  void printReceipt(){
+    mySerial.begin(9600);
+  printer.begin();
+    
+  
   printer.justify('C');
+  printer.boldOn();
   printer.setSize('L');
-  printer.println(F("BANK GROEP 5C"));
-  printer.setLineHeight(50);
-  printer.setSize('S');
-  printer.println(F("Made by Patrick,Jelle,Niek,Jesse"));
-
-
+  printer.println("CINA");
+  printer.println("_____________");
   printer.justify('L');
   printer.setSize('M');
-  printer.print("Bank: " +Bank);
+
+  
+  
+ // printer.boldOff();
+
+
+  
+  
+  printer.print(incomingByte);
+
   printer.println("\n------");
-  printer.print("Tijd: " + Tijd);
-  printer.println("\n------");
+  delay(1000);
   printer.print("Kaart: " +Kaart);
+  delay(1000);
   printer.println("\n------");
-  printer.println("------");
+  delay(1000);
+  
+  
 
 
   // Barcode examples:
   // CODE39 is the most common alphanumeric barcode:
-  printer.printBarcode("Bitch", CODE39);
-  printer.setBarcodeHeight(100);
+  //printer.printBarcode("Bitch", CODE39);
+  //printer.setBarcodeHeight(100);
   // Print UPC line on product barcodes:
-  printer.printBarcode("123456789123", UPC_A);
+  //printer.printBarcode("123456789123", UPC_A);
 
   
   printer.println(F("Tot ziens!"));
@@ -91,12 +130,9 @@ void setup() {
   delay(3000L);         // Sleep for 3 seconds
   printer.wake();       // MUST wake() before printing again, even if reset
   printer.setDefault(); // Restore printer to defaults
+  }
   
 
 
-}
-
-void loop() {
-  // put your main code here, to run repeatedly:
-
-}
+    
+  

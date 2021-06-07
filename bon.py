@@ -1,28 +1,20 @@
 import serial
 import time
+import datetime
 
 serialcomm = serial.Serial('COM4', 9600)
+
 
 serialcomm.timeout = 1
 
 while True:
+    
+    
 
-    i = input("Bonetje? Typ Ja/Nee ").strip()
+    
 
-    if i == "Nee":
-
-        print('Tot ziens!')
-
-        break
-    if i == "Ja":
-        print('Aan het printen')
-        print('Tot ziens!')
-        
-
-        
-
-
-    serialcomm.write(i.encode())
+    serialcomm.write("zaterdag, 5 juni 2021".encode())
+    #serialcomm.write("20".encode())
 
     time.sleep(0.5)
 
