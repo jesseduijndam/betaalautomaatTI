@@ -66,7 +66,7 @@ void loop()
     }
     if (aantal_10 > 0)
     {
-      push(stepper2, aantal_10);            //turn stepper motor2
+      push(stepper2, -aantal_10);            //turn stepper motor2
     }
 
     while (stepper1.isRunning() || stepper2.isRunning())    //while a stepper motor needs to turn
