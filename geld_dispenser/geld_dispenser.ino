@@ -5,7 +5,7 @@ const long stepsPerRevolution = 4096;
 
 // initialize steppermotors
 AccelStepper stepper1 = AccelStepper(8, 8, 10, 9, 11);
-AccelStepper stepper2 = AccelStepper(8, 4, 6, 5, 7);
+AccelStepper stepper2 = AccelStepper(8, 4, 5, 6, 7);
 
 // function to turn the stepper motors n amount of time
 void push(AccelStepper &step, long aantal)
