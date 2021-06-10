@@ -1,0 +1,32 @@
+body, html {
+    margin:0px; padding:0px;
+    width: 800px; 
+    height: 480px;
+    /* font-family: 'Press Start 2P', cursive;   */
+    overflow:hidden; 
+    color: white; 
+}
+*:not(body, html) {
+    box-sizing: border-box;   
+    position: absolute;
+    display: block;
+    margin:0px; padding:0px;
+    background-repeat: no-repeat;   
+}
+
+automaatbackground {
+    background-image: url(../img/backgroundtest2.jpg);
+    width:800px; height: 480px;
+    background-size : cover;
+}
+
+onlinebackground {
+    background-image: url(../img/backgroundtest3.jpg);
+    width:800px; height: 480px;
+    background-size : cover;
+}
+
+tekst {
+    font-size: 30px;     
+    z-index: 1;
+}
