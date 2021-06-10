@@ -86,6 +86,7 @@ void read_card()
   int lastindex = s.length() -1;
   s.remove(lastindex);
   }
+ 
   
     mySerial.begin(9600);
   printer.begin();
@@ -99,13 +100,17 @@ void read_card()
   printer.justify('L');
   printer.setSize('M');
 
-  printer.boldOff();
+  //printer.boldOff();
   //printer.print(incomingByte);
 
   printer.println("\n------");
   delay(1000);
-  printer.print("Kaart: " + s);
+  printer.print("Kaart: " );
+  printer.print(s);
+  delay(100);
   printer.print("******");
+  printer.println("\n------");
+  //printer.print("Tijd: " + data_serial);
   delay(1000);
   printer.println("\n------");
   delay(1000);
@@ -252,7 +257,14 @@ void loop()
     if (mfrc522.PICC_ReadCardSerial())
     {
       read_card();
-      printReceipt();
+      
     }
+  }
+  
+  read_serial();
+  if (data_serial == "print"){
+    printReceipt();
+
+     
   }
 }
