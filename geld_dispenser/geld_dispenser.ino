@@ -21,10 +21,10 @@ void setup()
 {
 
   pinMode(relay_pin, OUTPUT);
-  stepper1.setMaxSpeed(1200.0);
-  stepper1.setAcceleration(1500.0);
-  stepper2.setMaxSpeed(1200.0);
-  stepper2.setAcceleration(1500.0);
+  stepper1.setMaxSpeed(800.0);
+  stepper1.setAcceleration(1200.0);
+  stepper2.setMaxSpeed(800.0);
+  stepper2.setAcceleration(1000.0);
 
   Serial.begin(115200);
 
